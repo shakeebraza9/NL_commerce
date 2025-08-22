@@ -66,19 +66,19 @@ class Product extends Model
         }
 
         $result = [[]]; // Initialize with an empty combination
-        
+
         foreach ($attributes as $attribute) {
             $currentResult = [];
-    
+
             foreach ($result as $item) {
                 foreach ($attribute['values'] as $value) {
                     $currentResult[] = array_merge($item, [ $value]);
                 }
             }
-    
+
             $result = $currentResult;
         }
-    
+
         return $result;
     }
 
@@ -88,7 +88,7 @@ class Product extends Model
 }
 
     public function get_gallery()
-    {  
+    {
 
         $img = explode(',',$this->images);
         foreach ($this->variations->pluck('image')->toArray() as $val) {
@@ -99,7 +99,7 @@ class Product extends Model
     }
 
     public function get_thumbnail()
-    {   
+    {
         return $this->belongsTo(Filemanager::class, 'image');
     }
 
@@ -111,11 +111,14 @@ class Product extends Model
     public function get_category()
     {
         return Category::where('id',$this->category_id)->first();
-        
+
     }
 
 
 
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
 
-   
 }

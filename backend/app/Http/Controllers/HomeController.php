@@ -303,10 +303,7 @@ foreach ($data as $product) {
     }
 
 
-     /**
-     * Show the application dashboard.
-     * @return \Illuminate\Contracts\Support\Renderable
-     */public function product($id)
+  public function product($id)
 {
     // Fetch product with variations
     $product = Product::with(['variations.attributes.values', 'variations.attributes.attribute'])

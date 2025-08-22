@@ -9,6 +9,20 @@ use App\Models\Category;
 use App\Models\Collection;
 use App\Models\ProductCollection;
 use Illuminate\Support\Facades\DB;
+use App\Models\Brand;
+use App\Models\newsletter;
+use App\Models\Attribute;
+use App\Models\Value;
+use App\Models\Page;
+use App\Models\Variation;
+use App\Models\VariationAttribute;
+use App\Models\Slider;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
+use Symfony\Component\Mime\Part\HtmlPart;
+use Illuminate\Support\Facades\App;
+
 class ProductController extends Controller
 {
 public function popular()
@@ -134,5 +148,87 @@ public function popular()
             'data' => $products
         ]);
     }
+
+    public function productApi($id)
+{
+    // Fetch product with variations
+    $product = Product::with(['variations.attributes.values', 'variations.attributes.attribute'])
+        ->where('slug', $id)
+        ->firstOrFail();
+
+    // Get related products randomly
+    $related_products = Product::orderByRaw('RAND()')->limit(4)->get();
+
+    // ✅ Get discount percent value from settings
+    $discountSetting = DB::table('settings')->where('field', 'discount_percent')->first();
+    $discount = 0;
+
+    if ($discountSetting && is_numeric($discountSetting->value)) {
+        $discount = (float) $discountSetting->value;
+    }
+
+    // 🟢 Apply discount on main product price if applicable
+    $finalProductPrice = $product->price;
+    if ($discount > 0 && $finalProductPrice > 0) {
+        $discountAmount = ($finalProductPrice * $discount) / 100;
+        $finalProductPrice = round($finalProductPrice - $discountAmount, 2);
+    }
+
+    $attributes = [];
+    $values = [];
+    $variations = [];
+
+    foreach ($product->variations as $variation) {
+        foreach ($variation->attributes as $attribute) {
+
+            // 🟢 Apply discount to variation price
+            $variationPrice = $variation->price;
+            if ($discount > 0 && $variationPrice > 0) {
+                $variationPrice = round($variationPrice - ($variationPrice * $discount) / 100, 2);
+            }
+
+            $variations[] = [
+                'variation_id'     => $variation->id,
+                'sku'              => $variation->sku,
+                'quantity'         => $variation->quantity,
+                'price'            => $variationPrice,
+                'image'            => $variation->image,
+                'attribute_id'     => $attribute->attribute->id,
+                'attribute_title'  => $attribute->attribute->title,
+                'value_id'         => $attribute->values->id,
+                'value_title'      => $attribute->values->title,
+            ];
+
+            $attributes[$attribute->attribute->id] = $attribute->attribute->toArray();
+            $values[$attribute->values->id] = $attribute->values->toArray();
+        }
+    }
+
+    // 🟢 JSON Response
+    return response()->json([
+        'status'   => true,
+        'message'  => 'Product details fetched successfully',
+        'data'     => [
+            'product'   => [
+                'id'    => $product->id,
+                'title' => $product->title,
+                'brand' => $product->brand ? $product->brand->title : null,
+                'description' => $product->description,
+                'slug'  => $product->slug,
+                'price' => $finalProductPrice,
+                'originalPrice' => $product->selling_price,
+                'image' => $product->image,
+                'hover_image' => $product->hover_image,
+                'gallery' => $product->images,
+            ],
+            'attributes'        => array_values($attributes),
+            'values'            => array_values($values),
+            'variations'        => $variations,
+            'related_products'  => $related_products,
+            'discount_percent'  => $discount,
+        ]
+    ], 200);
+}
+
 
 }

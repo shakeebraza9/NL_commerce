@@ -9,12 +9,9 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\sSettingSController;
 use App\Http\Controllers\Api\OrderApiContoller;
 use App\Http\Controllers\Api\SupportController;
-use App\Events\TestEvent;
 
-Route::get('/test-broadcast', function () {
-    event(new TestEvent("Hello from backend!"));
-    return "Event fired!";
-});
+
+
 
 Route::prefix('v1')->group(function () {
     Route::get('/menu/{id}', [MenuController::class, 'getMenuWithItems']);
@@ -28,5 +25,6 @@ Route::prefix('v1')->group(function () {
     Route::get('/order-tracking/{trackingId}', [OrderApiContoller::class, 'track']);
     Route::post('/support-message', [SupportController::class, 'store']);
     Route::get('/support-message/{ip}/find', [SupportController::class, 'find']);
+    Route::get('/product/{slug}', [ProductController::class, 'productApi']);
 
 });

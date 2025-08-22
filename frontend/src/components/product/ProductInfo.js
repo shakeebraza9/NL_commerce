@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 
-export default function ProductInfo({ product }) {
+export default function ProductInfo({ product, variation }) {
     const [quantity, setQuantity] = useState(1)
     const [selectedSize, setSelectedSize] = useState(product.sizes?.[0])
 
@@ -12,7 +12,7 @@ export default function ProductInfo({ product }) {
         <div className="space-y-6">
             {/* Product Title */}
             <div>
-                <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+                <h1 className="text-3xl font-bold text-gray-900">{product.title}</h1>
                 <p className="text-gray-600 mt-2">{product.brand}</p>
             </div>
 
@@ -87,32 +87,26 @@ export default function ProductInfo({ product }) {
             </div>
 
             {/* Action Buttons */}
-            <div className="space-y-3">
-                <button className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors">
-                    Add to Cart
-                </button>
-                <button className="w-full border border-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors">
-                    Add to Wishlist
-                </button>
+         <div className="space-y-3">
+            <button
+                className="w-full bg-black text-white py-3 rounded-lg font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer"
+                disabled={
+                    !variation || 
+                    variation.length === 0 || 
+                    variation.every(v => v.quantity === 0)
+                }
+            >
+                Add to Cart
+            </button>
+
+            <button className="w-full border border-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors cursor-pointer">
+                Add to Wishlist
+            </button>
+
             </div>
 
-            {/* Product Features */}
-            <div className="border-t pt-6">
-                <ul className="space-y-2 text-sm text-gray-600">
-                    <li className="flex items-center">
-                        <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
-                        Free shipping on orders over $50
-                    </li>
-                    <li className="flex items-center">
-                        <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
-                        30-day return policy
-                    </li>
-                    <li className="flex items-center">
-                        <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
-                        1-year warranty included
-                    </li>
-                </ul>
-            </div>
+
+         
         </div>
     )
 }
