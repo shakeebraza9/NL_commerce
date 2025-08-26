@@ -4,7 +4,7 @@ import { menuFetch } from "@/api/menu"
 import toast from "react-hot-toast"
 import { Facebook, Instagram, Youtube } from "lucide-react"
 import { getGlobalSettings } from "@/api/globalSettings"
-
+import Link from "next/link";
 
 export default function Footer() {
     const [quickLinks, setQuickLinks] = useState([])
@@ -83,39 +83,40 @@ export default function Footer() {
 
 
 
-                {/* Quick Links */}
+              {/* Quick Links */}
                 <div>
-                    <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-                    <ul className="space-y-2">
-                        {quickLinks.map((item) => (
-                            <li key={item.id}>
-                                <a
-                                    href={item.slug || "#"}
-                                    className="hover:text-yellow-400 transition-colors"
-                                >
-                                    {item.name}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
+                <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+                <ul className="space-y-2">
+                    {quickLinks.map((item) => (
+                    <li key={item.id}>
+                        <Link
+                        href={item.slug ?? '#'}
+                        className="hover:text-yellow-400 transition-colors"
+                        >
+                        {item.name}
+                        </Link>
+                    </li>
+                    ))}
+                </ul>
                 </div>
 
                 {/* Customer Service */}
                 <div>
-                    <h3 className="text-lg font-semibold mb-4">Customer Service</h3>
-                    <ul className="space-y-2">
-                        {customerService.map((item) => (
-                            <li key={item.id}>
-                                <a
-                                    href={item.slug || "#"}
-                                    className="hover:text-yellow-400 transition-colors"
-                                >
-                                    {item.name}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
+                <h3 className="text-lg font-semibold mb-4">Customer Service</h3>
+                <ul className="space-y-2">
+                    {customerService.map((item) => (
+                    <li key={item.id}>
+                        <Link
+                        href={item.slug ?? '#'}
+                        className="hover:text-yellow-400 transition-colors"
+                        >
+                        {item.name}
+                        </Link>
+                    </li>
+                    ))}
+                </ul>
                 </div>
+
 
                 {/* Newsletter & Social */}
              <div>

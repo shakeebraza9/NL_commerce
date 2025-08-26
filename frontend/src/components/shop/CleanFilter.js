@@ -55,15 +55,15 @@ export default function CleanFilter() {
     }
 
     return (
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="bg-base-white dark:bg-base-black dark:text-base-white border border-gray-200 rounded-lg p-6">
             <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+                <h2 className="text-lg font-semibold ">Filters</h2>
                 <button className="text-sm text-blue-600 hover:text-blue-800">Clear All</button>
             </div>
 
             {/* Category */}
             <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-900 mb-3">Category</h3>
+                <h3 className="text-sm font-medium mb-3">Category</h3>
                 <div className="space-y-2">
                     {categories.map((category) => (
                         <label key={category.id} className="flex items-center">
@@ -81,7 +81,7 @@ export default function CleanFilter() {
 
             {/* Brand */}
             <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-900 mb-3">Brand</h3>
+                <h3 className="text-sm font-medium  mb-3">Brand</h3>
                 <div className="space-y-2 max-h-32 overflow-y-auto">
                     {brands.map((brand) => (
                         <label key={brand.id} className="flex items-center">
@@ -99,7 +99,7 @@ export default function CleanFilter() {
 
             {/* Price Range */}
             <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-900 mb-3">Price Range</h3>
+                <h3 className="text-sm font-medium  mb-3">Price Range</h3>
                 <div className="px-2">
                     <input
                         type="range"
@@ -118,7 +118,7 @@ export default function CleanFilter() {
 
             {/* Minimum Rating */}
             <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-900 mb-3">Minimum Rating</h3>
+                <h3 className="text-sm font-medium  mb-3">Minimum Rating</h3>
                 <div className="space-y-2">
                     {ratings.map((rating) => (
                         <label key={rating.id} className="flex items-center">

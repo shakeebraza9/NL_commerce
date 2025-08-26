@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\sSettingSController;
 use App\Http\Controllers\Api\OrderApiContoller;
 use App\Http\Controllers\Api\SupportController;
-
+use App\Http\Controllers\Api\PageController;
 
 
 
@@ -26,5 +26,6 @@ Route::prefix('v1')->group(function () {
     Route::post('/support-message', [SupportController::class, 'store']);
     Route::get('/support-message/{ip}/find', [SupportController::class, 'find']);
     Route::get('/product/{slug}', [ProductController::class, 'productApi']);
+    Route::get('/pages/{slug}', [PageController::class, 'show']);
 
 });

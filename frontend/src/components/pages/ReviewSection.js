@@ -50,9 +50,9 @@ const reviews = [
 
 export default function ReviewSection() {
     return (
-        <section className="py-24 bg-gradient-to-b from-gray-50 to-gray-100">
+        <section className="py-24 bg-gradient-to-b bg-base-white dark:bg-base-black dark:text-base-white">
             <div className="max-w-6xl mx-auto px-4">
-                <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-16 text-gray-900">
+                <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-16 ">
                     What Our Clients Say
                 </h2>
 

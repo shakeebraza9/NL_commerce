@@ -7,11 +7,11 @@ export default function AboutStats() {
   ]
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-base-white dark:bg-base-black dark:text-base-white">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
           {stats.map((stat, index) => (
-            <div key={index} className="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+            <div key={index} className="p-6 bg-base-white dark:bg-base-black dark:text-base-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
               <div className={`text-4xl font-bold ${stat.color} mb-2`}>{stat.number}</div>
               <div className="text-gray-600">{stat.label}</div>
             </div>

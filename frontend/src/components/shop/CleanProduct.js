@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function CleanProduct({ product }) {
     return (
-        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
+        <div className="bg-base-white dark:bg-base-black dark:text-base-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
             <div className="relative w-full h-64 overflow-hidden">
                 <img
                     src={product.image || "/placeholder.svg"}

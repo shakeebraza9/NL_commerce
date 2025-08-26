@@ -6,7 +6,7 @@ import AboutCTA from "@/components/about/AboutCTA"
 
 export default function About() {
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-base-white dark:bg-base-black dark:text-base-white">
             <AboutHero />
             <AboutStats />
             <AboutFeatures />

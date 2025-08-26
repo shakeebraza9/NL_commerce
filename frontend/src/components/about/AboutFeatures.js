@@ -38,19 +38,19 @@ export default function AboutFeatures() {
   ]
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-base-white dark:bg-base-black dark:text-base-white">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Why Choose Us?</h2>
+        <h2 className="text-3xl font-bold text-center  mb-12">Why Choose Us?</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="bg-white p-8 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow"
+              className="bg-base-white dark:bg-base-black dark:text-base-whitep-8 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow"
             >
               <div className={`w-16 h-16 ${feature.bgColor} rounded-full flex items-center justify-center mb-6`}>
                 {feature.icon}
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">{feature.title}</h3>
+              <h3 className="text-xl font-semibold  mb-4">{feature.title}</h3>
               <p className="text-gray-600">{feature.description}</p>
             </div>
           ))}

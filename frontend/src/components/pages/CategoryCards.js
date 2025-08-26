@@ -1,19 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { categoriesFetch } from "@/api/categories";
+import { useState } from "react";
+import { useGetCategoriesQuery } from "@/features/categoriesApi";
 
 export default function CategoryCards() {
-    const [categories, setCategories] = useState([]);
-    const [hoveredIndex, setHoveredIndex] = useState(null);
-
-    useEffect(() => {
-        const loadCategories = async () => {
-            const data = await categoriesFetch();
-            setCategories(data);
-        };
-        loadCategories();
-    }, []);
+const { data, isLoading, isError } = useGetCategoriesQuery();
+const categories = data?.data || [];
+const [hoveredIndex, setHoveredIndex] = useState(null);
+if (isLoading) return <p>Loading categories...</p>;
+if (isError) return <p>Failed to load categories</p>;
 
     return (
         <div
@@ -33,7 +28,6 @@ export default function CategoryCards() {
                     onMouseEnter={() => setHoveredIndex(index)}
                     onMouseLeave={() => setHoveredIndex(null)}
                 >
-
                     <div className="relative h-64 overflow-hidden">
                         <img
                             src={`${process.env.NEXT_PUBLIC_WEB_BASE_URL}${cat.image_id}` || "/placeholder.svg"}
@@ -42,65 +36,45 @@ export default function CategoryCards() {
                                      group-hover:scale-110 group-hover:rotate-1"
                         />
 
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent 
+                                        opacity-70 group-hover:opacity-90 transition-all duration-500">
+                        </div>
 
-                        <div
-                            className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent 
-                                      opacity-70 group-hover:opacity-90 transition-all duration-500"
-                        ></div>
-
-
-                        <div
-                            className="absolute top-4 right-4 w-12 h-12 bg-white/20 backdrop-blur-md 
-                                      rounded-full flex items-center justify-center text-2xl
-                                      transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-12"
-                        >
+                        <div className="absolute top-4 right-4 w-12 h-12 bg-white/20 backdrop-blur-md 
+                                        rounded-full flex items-center justify-center text-2xl
+                                        transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-12">
                             🛍️
                         </div>
                     </div>
 
-
                     <div className="absolute inset-0 flex flex-col justify-end p-6">
-
                         <div className="transform transition-all duration-500 group-hover:-translate-y-2">
-                            <h3
-                                className="text-2xl font-bold text-white mb-2 tracking-wide drop-shadow-lg
-                                         transform transition-all duration-500 group-hover:text-3xl"
-                            >
+                            <h3 className="text-2xl font-bold text-white mb-2 tracking-wide drop-shadow-lg
+                                           transform transition-all duration-500 group-hover:text-3xl">
                                 {cat.title}
                             </h3>
-
-                            {/* Subtitle that appears on hover */}
-                            <p
-                                className="text-white/80 text-sm opacity-0 transform translate-y-4
+                            <p className="text-white/80 text-sm opacity-0 transform translate-y-4
                                         group-hover:opacity-100 group-hover:translate-y-0
-                                        transition-all duration-500 delay-100"
-                            >
+                                        transition-all duration-500 delay-100">
                                 {cat.details}
                             </p>
                         </div>
 
-                        {/* Action button */}
-                        <div
-                            className="mt-4 opacity-0 transform translate-y-4
-                                      group-hover:opacity-100 group-hover:translate-y-0
-                                      transition-all duration-500 delay-200"
-                        >
-                            <button
-                                className="px-4 py-2 bg-white/20 backdrop-blur-md rounded-full
-                                             text-white text-sm font-medium border border-white/30
-                                             hover:bg-white/30 transition-all duration-300
-                                             transform hover:scale-105"
-                            >
+                        <div className="mt-4 opacity-0 transform translate-y-4
+                                        group-hover:opacity-100 group-hover:translate-y-0
+                                        transition-all duration-500 delay-200">
+                            <button className="px-4 py-2 bg-white/20 backdrop-blur-md rounded-full
+                                               text-white text-sm font-medium border border-white/30
+                                               hover:bg-white/30 transition-all duration-300
+                                               transform hover:scale-105">
                                 Shop Now →
                             </button>
                         </div>
                     </div>
 
-                    {/* Animated border effect */}
-                    <div
-                        className={`absolute inset-0 rounded-3xl transition-all duration-500
-                                   ${hoveredIndex === index ? "shadow-2xl shadow-blue-500/20" : "shadow-lg"}`}
-                    ></div>
+                    <div className={`absolute inset-0 rounded-3xl transition-all duration-500
+                                     ${hoveredIndex === index ? "shadow-2xl shadow-blue-500/20" : "shadow-lg"}`}>
+                    </div>
                 </div>
             ))}
         </div>
