@@ -33,16 +33,16 @@ File: scss
 @import url(https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700);
 
 .skin-default .topbar {
-  background: #4F5467; 
+  background: #4F5467;
 }
 
 .skin-default .topbar .top-navbar .navbar-header .navbar-brand .dark-logo {
-    display: none; 
+    display: none;
 }
 
 .skin-default .topbar .top-navbar .navbar-header .navbar-brand .light-logo {
     display: inline-block;
-    color: rgba(255, 255, 255, 0.8); 
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .skin-green {
@@ -132,39 +132,41 @@ File: scss
 .skin-blue {
   /*Theme Colors*/ }
   .skin-blue .topbar {
-    background: #03a9f3; }
+    background: #1f2937; }
     .skin-blue .topbar .top-navbar .navbar-header .navbar-brand .dark-logo {
       display: none; }
     .skin-blue .topbar .top-navbar .navbar-header .navbar-brand .light-logo {
       display: inline-block;
       color: rgba(255, 255, 255, 0.8); }
   .skin-blue .sidebar-nav ul li a.active, .skin-blue .sidebar-nav ul li a:hover {
-    color: #03a9f3; }
+    color: #1f2937; }
     .skin-blue .sidebar-nav ul li a.active i, .skin-blue .sidebar-nav ul li a:hover i {
-      color: #03a9f3; }
+      color: #1f2937; }
   .skin-blue .sidebar-nav > ul > li.active > a {
-    color: #03a9f3;
-    border-left: 3px solid #03a9f3; }
+    color: #1f2937;
+    border-left: 3px solid #1f2937; }
     .skin-blue .sidebar-nav > ul > li.active > a i {
-      color: #03a9f3; }
+      color: #1f2937; }
   .skin-blue .page-titles .breadcrumb .breadcrumb-item.active {
-    color: #03a9f3; }
-
+    color: #1f2937; }
+.sidebar-nav ul li.active{
+padding-top: 10px;
+}
 .skin-blue-dark {
   /*Theme Colors*/ }
   .skin-blue-dark .topbar {
-    background: #03a9f3; }
+    background: #1f2937; }
   .skin-blue-dark .sidebar-nav ul li a.active, .skin-blue-dark .sidebar-nav ul li a:hover {
-    color: #03a9f3; }
+    color: #1f2937; }
     .skin-blue-dark .sidebar-nav ul li a.active i, .skin-blue-dark .sidebar-nav ul li a:hover i {
-      color: #03a9f3; }
+      color: #1f2937; }
   .skin-blue-dark .sidebar-nav > ul > li.active > a {
-    color: #03a9f3;
-    border-left: 3px solid #03a9f3; }
+    color: #1f2937;
+    border-left: 3px solid #1f2937; }
     .skin-blue-dark .sidebar-nav > ul > li.active > a i {
-      color: #03a9f3; }
+      color: #1f2937; }
   .skin-blue-dark .page-titles .breadcrumb .breadcrumb-item.active {
-    color: #03a9f3; }
+    color: #1f2937; }
   .skin-blue-dark .topbar .top-navbar .navbar-header .navbar-brand .dark-logo {
     display: none; }
   .skin-blue-dark .topbar .top-navbar .navbar-header .navbar-brand .light-logo {
@@ -325,7 +327,7 @@ File: scss
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 :root {
-  --bs-blue: #03a9f3;
+  --bs-blue: #1f2937;
   --bs-indigo: #6610f2;
   --bs-purple: #ab8ce4;
   --bs-pink: #e83e8c;
@@ -341,7 +343,7 @@ File: scss
   --bs-primary: #fb9678;
   --bs-secondary: #f8f9fa;
   --bs-success: #00c292;
-  --bs-info: #03a9f3;
+  --bs-info: #1f2937;
   --bs-warning: #fec107;
   --bs-danger: #e46a76;
   --bs-light: #f8f9fa;
@@ -790,7 +792,9 @@ progress {
 .figure-caption {
   font-size: 80%;
   color: #6c757d; }
-
+.container-fluid{
+    padding: 80px 25px !important;
+}
 .container,
 .container-fluid,
 .container-sm,
@@ -2394,8 +2398,8 @@ textarea.form-control-lg {
 
 .btn-info {
   color: #000;
-  background-color: #03a9f3;
-  border-color: #03a9f3; }
+  background-color: #1f2937;
+  border-color: #1f2937; }
   .btn-info:hover {
     color: #000;
     background-color: #29b6f5;
@@ -2417,8 +2421,8 @@ textarea.form-control-lg {
       box-shadow: 0 0 0 0.25rem rgba(3, 144, 207, 0.5); }
   .btn-info:disabled, .btn-info.disabled {
     color: #000;
-    background-color: #03a9f3;
-    border-color: #03a9f3; }
+    background-color: #1f2937;
+    border-color: #1f2937; }
 
 .btn-warning {
   color: #000;
@@ -2652,24 +2656,24 @@ textarea.form-control-lg {
     background-color: transparent; }
 
 .btn-outline-info {
-  color: #03a9f3;
-  border-color: #03a9f3; }
+  color: #1f2937;
+  border-color: #1f2937; }
   .btn-outline-info:hover {
     color: #000;
-    background-color: #03a9f3;
-    border-color: #03a9f3; }
+    background-color: #1f2937;
+    border-color: #1f2937; }
   .btn-check:focus + .btn-outline-info, .btn-outline-info:focus {
     box-shadow: 0 0 0 0.25rem rgba(3, 169, 243, 0.5); }
   .btn-check:checked + .btn-outline-info,
   .btn-check:active + .btn-outline-info, .btn-outline-info:active, .btn-outline-info.active, .btn-outline-info.dropdown-toggle.show {
     color: #000;
-    background-color: #03a9f3;
-    border-color: #03a9f3; }
+    background-color: #1f2937;
+    border-color: #1f2937; }
     .btn-check:checked + .btn-outline-info:focus,
     .btn-check:active + .btn-outline-info:focus, .btn-outline-info:active:focus, .btn-outline-info.active:focus, .btn-outline-info.dropdown-toggle.show:focus {
       box-shadow: 0 0 0 0.25rem rgba(3, 169, 243, 0.5); }
   .btn-outline-info:disabled, .btn-outline-info.disabled {
-    color: #03a9f3;
+    color: #1f2937;
     background-color: transparent; }
 
 .btn-outline-warning {
@@ -4966,7 +4970,7 @@ textarea.form-control-lg {
     color: #33cea8; }
 
 .link-info {
-  color: #03a9f3; }
+  color: #1f2937; }
   .link-info:hover, .link-info:focus {
     color: #35baf5; }
 
@@ -5276,7 +5280,7 @@ textarea.form-control-lg {
   border-color: #00c292 !important; }
 
 .border-info {
-  border-color: #03a9f3 !important; }
+  border-color: #1f2937 !important; }
 
 .border-warning {
   border-color: #fec107 !important; }
@@ -5911,7 +5915,7 @@ textarea.form-control-lg {
   color: #00c292 !important; }
 
 .text-info {
-  color: #03a9f3 !important; }
+  color: #1f2937 !important; }
 
 .text-warning {
   color: #fec107 !important; }
@@ -5959,7 +5963,7 @@ textarea.form-control-lg {
   background-color: #00c292 !important; }
 
 .bg-info {
-  background-color: #03a9f3 !important; }
+  background-color: #1f2937 !important; }
 
 .bg-warning {
   background-color: #fec107 !important; }
@@ -18511,7 +18515,7 @@ ol li {
   margin: 5px 0; }
 
 /*******************
-Padding margin property 
+Padding margin property
 *******************/
 html body .m-t-5 {
   margin-top: 5px; }
@@ -18982,7 +18986,7 @@ Labels
   background-color: #00c292; }
 
 .label-info {
-  background-color: #03a9f3; }
+  background-color: #1f2937; }
 
 .label-warning {
   background-color: #fec107; }
@@ -19256,7 +19260,7 @@ sidebar navigation
         display: block;
         align-items: center;
         font-size: 14px;
-        font-weight: 400; 
+        font-weight: 400;
   }
 
 
@@ -19427,7 +19431,7 @@ ul#themecolors {
   background: #e46a76; }
 
 .blue-theme {
-  background: #03a9f3; }
+  background: #1f2937; }
 
 .purple-theme {
   background: #ab8ce4; }
@@ -19465,11 +19469,11 @@ ul#themecolors {
 .blue-dark-theme {
   background: #212529;
   /* Old browsers */
-  background: -moz-linear-gradient(left, #212529 0%, #212529 23%, #03a9f3 23%, #03a9f3 99%);
+  background: -moz-linear-gradient(left, #212529 0%, #212529 23%, #1f2937 23%, #1f2937 99%);
   /* FF3.6-15 */
-  background: -webkit-linear-gradient(left, #212529 0%, #212529 23%, #03a9f3 23%, #03a9f3 99%);
+  background: -webkit-linear-gradient(left, #212529 0%, #212529 23%, #1f2937 23%, #1f2937 99%);
   /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to right, #212529 0%, #212529 23%, #03a9f3 23%, #03a9f3 99%); }
+  background: linear-gradient(to right, #212529 0%, #212529 23%, #1f2937 23%, #1f2937 99%); }
 
 .purple-dark-theme {
   background: #212529;
@@ -19744,7 +19748,7 @@ Form summernote
 .label {
   display: inline-block; }
 
-/*============================================================== 
+/*==============================================================
 Form addons page
 ============================================================== */
 /*Bootstrap select*/
@@ -19791,7 +19795,7 @@ Form addons page
 .input-form .btn {
   padding: 8px 12px; }
 
-/*============================================================== 
+/*==============================================================
 Form Material page
  ============================================================== */
 /*Material inputs*/
@@ -19833,13 +19837,13 @@ Form Material page
     border-bottom: 1px solid #fb9678; }
 
 /*******************
-Form validation error 
+Form validation error
 ******************/
 .error .help-block {
   color: #e46a76; }
 
 /*******************
-File Upload 
+File Upload
 ******************/
 .fileupload {
   overflow: hidden;
@@ -20408,8 +20412,8 @@ icons path
   font-family: 'Material Design Icons';
   src: url("fonts/materialdesignicons-webfont.ttf") format("truetype"); }
 
-/*============================================================== 
- For all pages 
+/*==============================================================
+ For all pages
  ============================================================== */
 #main-wrapper {
   width: 100%;
@@ -21489,7 +21493,7 @@ html body .navbar-dark .mailbox .message-center {
     width: 100%;
     min-height: 380px; }
 
-/*============================================================== 
+/*==============================================================
 widget-chart-page product review
  ============================================================== */
 .product-review {
@@ -21545,14 +21549,14 @@ Author: Wrappixel
 
 File: scss
 */
-/*============================================================== 
- For Desktop & above all (1650px) 
+/*==============================================================
+ For Desktop & above all (1650px)
  ============================================================== */
-/*============================================================== 
- For Laptop & above all (1370px) 
+/*==============================================================
+ For Laptop & above all (1370px)
  ============================================================== */
-/*-- ============================================================== 
- Small Desktop & above all (1024px) 
+/*-- ==============================================================
+ Small Desktop & above all (1024px)
  ============================================================== */
 @media (min-width: 1024px) {
   .page-wrapper, .footer {
@@ -21566,8 +21570,8 @@ File: scss
     .d-flex.no-block {
       display: flex !important; } }
 
-/*-- ============================================================== 
- Ipad & above all(768px) 
+/*-- ==============================================================
+ Ipad & above all(768px)
  ============================================================== */
 @media (min-width: 768px) {
   .navbar-header {
@@ -21583,11 +21587,11 @@ File: scss
 
 
 
-/*-- ============================================================== 
- Phone and below ipad(767px) 
+/*-- ==============================================================
+ Phone and below ipad(767px)
  ============================================================== */
 @media (max-width: 767px) {
-  
+
   .container-fluid,
   .container-sm,
   .container-md,
@@ -21597,7 +21601,7 @@ File: scss
     /* padding: 0px 15px 0px 15px; */
     /* overflow: hidden;  */
   }
-  
+
 /*Header*/
   .topbar {
     width: 100%; }
@@ -21627,7 +21631,7 @@ File: scss
     padding: 10px 0; }
   .vtabs .tabs-vertical {
     width: auto; }
-  
+
     /*Footer*/
   .material-icon-list-demo .icons div {
     width: 100%; }
@@ -21653,7 +21657,7 @@ File: scss
     padding: 10% 0; }
     .login-sidebar .login-box {
       position: relative; }
-  
+
 
   /*This is for chat page*/
   .chat-main-box .chat-left-aside {
@@ -21667,7 +21671,7 @@ File: scss
       display: block; }
   .chat-main-box .chat-right-aside {
     width: 100%; }
-  
+
     /*Timeline*/
   ul.timeline:before {
     left: 40px; }
@@ -21689,23 +21693,23 @@ File: scss
     left: -14px;
     border-right-width: 14px;
     border-left-width: 0; }
-  
+
     /*Contact app page*/
   .left-aside {
     width: 100%;
     position: relative;
     border: 0px; }
-  
+
     .right-aside {
     margin-left: 0px; }
-  
+
     .flex-wrap {
     flex-wrap: wrap !important;
     -webkit-flex-wrap: wrap !important; }
-  
+
     .chat-list li .chat-content {
     width: calc(100% - 80px); }
-  
+
   /*Calendar*/
   .fc-toolbar .fc-left, .fc-toolbar .fc-right, .fc-toolbar .fc-center {
     float: none;
@@ -21716,13 +21720,13 @@ File: scss
 
   .hidden-md-down {
 
-    display: none; 
-  } 
-  
+    display: none;
+  }
 
 
 
-  
+
+
 }
 
 .image-div-filemanager {
