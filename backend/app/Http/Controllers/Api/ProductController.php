@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\Mime\Part\HtmlPart;
 use Illuminate\Support\Facades\App;
+use App\Models\NotifyEmail;
 
 class ProductController extends Controller
 {
@@ -229,6 +230,112 @@ public function popular()
         ]
     ], 200);
 }
+public function checkStockInAva($productId, Request $request)
+    {
+
+        $variationId = $request->variation_id;
+        $requestedQty = (int) $request->quantity;
+
+        if (!$variationId || !$requestedQty) {
+            return response()->json([
+                'status' => false,
+                'message' => 'variation_id and quantity required'
+            ], 400);
+        }
 
 
+        $variation = DB::table('variations')
+            ->where('id', $variationId)
+            ->where('product_id', $productId)
+            ->first();
+
+        if (!$variation) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Variation not found for this product'
+            ], 404);
+        }
+
+        $totalStock = $variation->quantity ?? 0;
+
+        // Step 2: kitna already sold hai (sirf completed orders count karo)
+        $soldQty = DB::table('order_items')
+            ->join('orders', 'orders.id', '=', 'order_items.order_id')
+            ->where('order_items.variation_id', $variationId)
+            ->where('orders.order_status', 'completed') // ya tumhari order_status ka condition
+            ->sum('order_items.quantity');
+
+        $availableStock = $totalStock - $soldQty;
+
+        // Step 3: check karo user ki quantity available hai ya nahi
+        if ($requestedQty <= $availableStock) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Stock available',
+                'available_stock' => $availableStock
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Not enough stock',
+            'available_stock' => $availableStock
+        ]);
+    }
+
+    public function checkStock(Request $request)
+{
+    $request->validate([
+        'variation_id' => 'required|integer',
+    ]);
+
+    $variationId = $request->variation_id;
+
+    // 1️⃣ Variation quantity
+    $variation = DB::table('variations')->where('id', $variationId)->first();
+    if (!$variation) {
+        return response()->json([
+            'status'  => false,
+            'message' => 'Variation not found',
+        ], 404);
+    }
+
+    $variationQty = (int) $variation->quantity;
+
+    // 2️⃣ Already sold from order_items
+    $soldQty = DB::table('order_items')
+        ->where('variation_id', $variationId)
+        ->sum('quantity');
+
+    $soldQty = (int) $soldQty;
+
+    // 3️⃣ Calculate available stock
+    $availableStock = max($variationQty - $soldQty, 0);
+
+    // 4️⃣ Return result (only stock)
+    return response()->json([
+        'status'          => $availableStock > 0,
+        'available_stock' => $availableStock,
+    ]);
+}
+public function storenotify(Request $request)
+    {
+        $request->validate([
+            'product_id'   => 'required|integer',
+            'variation_id' => 'nullable|integer',
+            'email'        => 'required|email',
+        ]);
+
+        $notify = NotifyEmail::create([
+            'product_id'   => $request->product_id,
+            'variation_id' => $request->variation_id,
+            'email'        => $request->email,
+        ]);
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Email notification request saved successfully',
+            'data'    => $notify
+        ]);
+    }
 }

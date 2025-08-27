@@ -20,8 +20,8 @@ export default function ProductTabs({ product }) {
                         onClick={() => setActiveTab(tab.id)}
                         className={`px-6 py-3 font-medium border-b-2 transition-colors ${
                             activeTab === tab.id
-                                ? "border-black text-black"
-                                : "border-transparent text-gray-500 hover:text-gray-700"
+                                ? "border-black text-red-600"
+                                : "border-transparent   hover:text-gray-700"
                         }`}
                     >
                         {tab.label}
@@ -51,7 +51,7 @@ export default function ProductTabs({ product }) {
                                                 ))}
                                             </div>
                                         </div>
-                                        <span className="text-sm text-gray-500">{review.date}</span>
+                                        <span className="text-sm  ">{review.date}</span>
                                     </div>
                                     <p className="text-gray-600">{review.comment}</p>
                                 </div>

@@ -27,5 +27,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/support-message/{ip}/find', [SupportController::class, 'find']);
     Route::get('/product/{slug}', [ProductController::class, 'productApi']);
     Route::get('/pages/{slug}', [PageController::class, 'show']);
-
+    Route::get('/products/{productId}/stock', [ProductController::class, 'checkStockInAva']);
+    Route::post('/check-stock', [ProductController::class, 'checkStock']);
+    Route::post('/notify-email', [ProductController::class, 'storenotify']);
 });

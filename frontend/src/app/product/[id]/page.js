@@ -5,6 +5,7 @@ import ProductImages from "@/components/product/ProductImages"
 import ProductInfo from "@/components/product/ProductInfo"
 import ProductTabs from "@/components/product/ProductTabs"
 import RelatedProducts from "@/components/product/RelatedProducts"
+import Loader from "@/components/Loader"; 
 
 export default function ProductDetail() {
     const { id  } = useParams()   
@@ -15,7 +16,7 @@ export default function ProductDetail() {
         if (!id ) return
         const fetchProduct = async () => {
             try {
-                const res = await fetch(`http://127.0.0.1:8000/api/v1/product/${id }`)
+                const res = await fetch(`http://127.0.0.1:8000/api/v1/product/${id}`)
                 const data = await res.json()
                 if (data.status) {
                     setProductData(data.data)
@@ -30,7 +31,7 @@ export default function ProductDetail() {
     }, [id])
 
     if (loading) {
-        return <div className="text-center py-20">Loading product...</div>
+        return  <Loader />
     }
 
     if (!productData) {
@@ -53,14 +54,14 @@ export default function ProductDetail() {
 
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-base-white dark:bg-base-black dark:text-base-white">
             {/* Breadcrumb */}
             <div className="border-b">
                 <div className="max-w-7xl mx-auto px-4 py-4">
                     <nav className="text-sm text-gray-500">
                         <span>Home</span> / 
                         <span> Category</span> / 
-                        <span className="text-gray-900"> {product.title}</span>
+                        <span> {product.title}</span>
                     </nav>
                 </div>
             </div>
