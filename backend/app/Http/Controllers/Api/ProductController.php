@@ -28,7 +28,7 @@ class ProductController extends Controller
 {
 public function popular()
     {
-        $products = Product::where('is_popular', 1)
+        $products = Product::where('is_featured', 1)
             ->where('is_enable', 1)
             ->latest()
             ->take(12)
