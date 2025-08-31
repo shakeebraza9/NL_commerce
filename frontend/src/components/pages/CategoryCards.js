@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useGetCategoriesQuery } from "@/features/categoriesApi";
-
+import Link from "next/link";
 export default function CategoryCards() {
 const { data, isLoading, isError } = useGetCategoriesQuery();
 const categories = data?.data || [];
@@ -63,12 +63,16 @@ if (isError) return <p>Failed to load categories</p>;
                         <div className="mt-4 opacity-0 transform translate-y-4
                                         group-hover:opacity-100 group-hover:translate-y-0
                                         transition-all duration-500 delay-200">
-                            <button className="px-4 py-2 bg-white/20 backdrop-blur-md rounded-full
-                                               text-white text-sm font-medium border border-white/30
-                                               hover:bg-white/30 transition-all duration-300
-                                               transform hover:scale-105">
+                            <Link 
+                                href={`/shop?category=${cat.slug}`} 
+                                className="px-4 py-2 bg-white/20 backdrop-blur-md rounded-full
+                                            text-white text-sm font-medium border border-white/30
+                                            hover:bg-white/30 transition-all duration-300
+                                            transform hover:scale-105"
+                                >
                                 Shop Now →
-                            </button>
+                                </Link>
+
                         </div>
                     </div>
 
