@@ -1,66 +1,21 @@
 "use client"
-
-import { useState } from "react"
+import Link from "next/link"
+import { useSelector, useDispatch } from "react-redux"
 import { Card, CardHeader, CardTitle, CardContent, Button, Separator } from "../../components/ui"
+import {
+  removeFromCart,
+  clearCart,
+  increaseQty,
+  decreaseQty,
+} from "../../features/cartSlice"
 
 export default function ShoppingCart() {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Premium Wireless Headphones",
-      price: 15999,
-      quantity: 2,
-      image: "/premium-wireless-headphones-black.png",
-      color: "Black",
-      size: "Standard",
-    },
-    {
-      id: 2,
-      name: "Smart Watch Pro",
-      price: 25999,
-      quantity: 1,
-      image: "/smartwatch-lifestyle.png",
-      color: "Silver",
-      size: "Medium",
-    },
-    {
-      id: 3,
-      name: "Bluetooth Speaker",
-      price: 8999,
-      quantity: 1,
-      image: "/bluetooth-speaker.png",
-      color: "Blue",
-      size: "Portable",
-    },
-    {
-      id: 4,
-      name: "Gaming Mouse",
-      price: 4999,
-      quantity: 3,
-      image: "/gaming-mouse.png",
-      color: "RGB",
-      size: "Standard",
-    },
-  ])
+  const dispatch = useDispatch()
 
-  const updateQuantity = (id, newQuantity) => {
-    if (newQuantity < 1) return
-    setCartItems((items) => items.map((item) => (item.id === id ? { ...item, quantity: newQuantity } : item)))
-  }
+  // Redux state se cart data nikal rahe hain
+  const { cartItems, subtotal, deliveryCharges, total } = useSelector((state) => state.cart)
 
-  const removeItem = (id) => {
-    setCartItems((items) => items.filter((item) => item.id !== id))
-  }
-
-  const clearCart = () => {
-    setCartItems([])
-  }
-
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  const deliveryCharges = subtotal > 50000 ? 0 : 500
   const tax = Math.round(subtotal * 0.18)
-  const total = subtotal + deliveryCharges + tax
-
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0)
 
   return (
@@ -89,7 +44,10 @@ export default function ShoppingCart() {
             <div className="lg:col-span-2 space-y-4">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Cart Items</h2>
-                <Button onClick={clearCart} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2">
+                <Button
+                  onClick={() => dispatch(clearCart())}
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2"
+                >
                   Clear Cart
                 </Button>
               </div>
@@ -100,7 +58,7 @@ export default function ShoppingCart() {
                     {/* Product Image */}
                     <div className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                       <img
-                        src={item.image || "/placeholder.svg"}
+                        src={`${process.env.NEXT_PUBLIC_WEB_BASE_URL}${item.image}` || "/placeholder.svg"}
                         alt={item.name}
                         className="w-full h-full object-cover"
                       />
@@ -111,7 +69,7 @@ export default function ShoppingCart() {
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="font-semibold text-lg">{item.name}</h3>
                         <Button
-                          onClick={() => removeItem(item.id)}
+                          onClick={() => dispatch(removeFromCart(item.id))}
                           className="bg-red-100 hover:bg-red-200 text-red-600 px-3 py-1 text-sm"
                         >
                           Remove
@@ -123,21 +81,23 @@ export default function ShoppingCart() {
                       </div>
 
                       <div className="flex justify-between items-center">
-                        <div className="text-xl font-bold text-green-600">₹{item.price.toLocaleString()}</div>
+                        <div className="text-xl font-bold text-green-600">
+                          ₹{item.price.toLocaleString()}
+                        </div>
 
                         {/* Quantity Controls */}
                         <div className="flex items-center gap-3">
                           <span className="text-sm text-gray-600">Qty:</span>
                           <div className="flex items-center border rounded-lg">
                             <Button
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              onClick={() => dispatch(decreaseQty(item.id))}
                               className="bg-gray-100 hover:bg-gray-200 text-black px-3 py-1 rounded-r-none"
                             >
                               -
                             </Button>
                             <span className="px-4 py-1 bg-white border-x">{item.quantity}</span>
                             <Button
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              onClick={() => dispatch(increaseQty(item.id))}
                               className="bg-gray-100 hover:bg-gray-200 text-black px-3 py-1 rounded-l-none"
                             >
                               +
@@ -149,7 +109,9 @@ export default function ShoppingCart() {
                       {/* Item Total */}
                       <div className="text-right mt-2">
                         <span className="text-sm text-gray-600">Total: </span>
-                        <span className="font-bold text-lg">₹{(item.price * item.quantity).toLocaleString()}</span>
+                        <span className="font-bold text-lg">
+                          ₹{(item.price * item.quantity).toLocaleString()}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -185,7 +147,7 @@ export default function ShoppingCart() {
 
                   <div className="flex justify-between text-xl font-bold">
                     <span>Total</span>
-                    <span>₹{total.toLocaleString()}</span>
+                    <span>₹{(subtotal + deliveryCharges + tax).toLocaleString()}</span>
                   </div>
 
                   {deliveryCharges > 0 && (
@@ -195,50 +157,24 @@ export default function ShoppingCart() {
                   )}
 
                   <div className="space-y-3 pt-4">
-                    <Button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 text-lg font-semibold">
-                      Proceed to Checkout
-                    </Button>
+                        <Link 
+                            href="/checkout"
+                            className="block w-full text-center bg-yellow-500 text-black py-3 sm:py-4 rounded-xl font-semibold hover:bg-yellow-600 transition-colors text-sm sm:text-base shadow-md"
+                        >
+                            Checkout
+                        </Link>
 
-                    <Button className="w-full bg-gray-100 hover:bg-gray-200 text-black py-2">Continue Shopping</Button>
+                        <Link 
+                            href="/shop"
+                            className="block w-full text-center bg-white text-yellow-600 py-3 sm:py-4 rounded-xl font-semibold border border-yellow-500 hover:bg-yellow-50 transition-colors text-sm sm:text-base shadow-md"
+                        >
+                            Continue Shopping
+                        </Link>
                   </div>
 
-                  {/* Promo Code */}
-                  <div className="pt-4 border-t">
-                    <h4 className="font-semibold mb-2">Have a promo code?</h4>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        placeholder="Enter code"
-                        className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                      <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2">Apply</Button>
-                    </div>
-                  </div>
+               
                 </CardContent>
               </Card>
-            </div>
-          </div>
-        )}
-
-        {/* Recently Viewed */}
-        {cartItems.length > 0 && (
-          <div className="mt-12">
-            <h2 className="text-2xl font-bold mb-6">You might also like</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[1, 2, 3, 4].map((item) => (
-                <Card key={item} className="p-4 hover:shadow-lg transition-shadow">
-                  <div className="aspect-square bg-gray-100 rounded-lg mb-3 overflow-hidden">
-                    <img
-                      src={`/generic-product-display.png?height=200&width=200&query=product ${item}`}
-                      alt={`Recommended product ${item}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <h3 className="font-semibold mb-1">Product {item}</h3>
-                  <p className="text-green-600 font-bold">₹{(Math.random() * 20000 + 5000).toFixed(0)}</p>
-                  <Button className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white py-2">Add to Cart</Button>
-                </Card>
-              ))}
             </div>
           </div>
         )}

@@ -18,10 +18,11 @@ export default function Header() {
   const [cartOpen, setCartOpen] = useState(false);
   const [menu, setMenu] = useState([]);
   const [settings, setSettings] = useState({});
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: "Shalwar kameez for woman", price: 299, qty: 1, image: "/images/dress4.png", color: "Black" },
-    { id: 2, name: "Casual Summer Dress", price: 199, qty: 2, image: "/images/dress2.png", color: "Silver" },
-  ]);
+    const { cartItems } = useSelector((state) => state.cart)
+
+  // Total quantity calculate karna
+  const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0)
+
 
   // Fetch menu and settings
   useEffect(() => {
@@ -144,14 +145,16 @@ export default function Header() {
           </div>
 
           <button
-            onClick={() => setCartOpen(true)}
-            className="relative hover:text-primary transition-all duration-200 hover:scale-110 p-2 rounded-full hover:bg-primary/10"
-          >
-            <ShoppingCart size={24} />
-            <span className="absolute -top-1 -right-1 bg-red-700 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold shadow-lg animate-bounce">
-              {cartItems.length}
-            </span>
-          </button>
+              onClick={() => setCartOpen(true)}
+              className="relative hover:text-primary transition-all duration-200 hover:scale-110 p-2 rounded-full hover:bg-primary/10"
+            >
+              <ShoppingCart size={24} />
+              {totalQuantity > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-700 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold shadow-lg animate-bounce">
+                  {totalQuantity}
+                </span>
+              )}
+            </button>
 
           <button
             className="md:hidden p-2 rounded-full hover:bg-primary/10 transition-all duration-200"

@@ -45,12 +45,13 @@ export default function CartSidebar({ cartOpen, setCartOpen }) {
                             <p className="text-sm sm:text-base text-gray-500 mb-6">
                                 Add some products to get started
                             </p>
-                            <button
+                            <Link 
+                              href="/shop"
                                 onClick={() => setCartOpen(false)}
                                 className="bg-black text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-gray-800 transition-colors"
                             >
                                 Continue Shopping
-                            </button>
+                            </Link >
                         </div>
                     ) : (
                         <div className="space-y-4">
@@ -146,7 +147,7 @@ export default function CartSidebar({ cartOpen, setCartOpen }) {
                             Checkout Now
                             </Link>
                             <Link
-                                href="/cart"
+                                href="/viewcards"
                                 onClick={() => setCartOpen(false)}
                                 className="block w-full text-center py-2 sm:py-3 border border-gray-300 rounded-xl font-semibold text-gray-700 hover:bg-gray-100 transition-colors text-sm sm:text-base"
                             >
