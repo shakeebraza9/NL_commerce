@@ -137,9 +137,14 @@ export default function CartSidebar({ cartOpen, setCartOpen }) {
                         </div>
 
                         <div className="space-y-2 sm:space-y-3">
-                            <button className="w-full bg-black text-white py-3 sm:py-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors text-sm sm:text-base">
-                                Checkout Now
-                            </button>
+                            
+                            <Link 
+                            href="/checkout"
+                            onClick={() => setCartOpen(false)}
+                            className="block w-full text-center bg-black text-white py-3 sm:py-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors text-sm sm:text-base"
+                            >
+                            Checkout Now
+                            </Link>
                             <Link
                                 href="/cart"
                                 onClick={() => setCartOpen(false)}
