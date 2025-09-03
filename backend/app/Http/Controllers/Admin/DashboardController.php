@@ -17,6 +17,8 @@ use App\Models\Order;
 use App\Models\Collection;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\WebsiteActivity;
+
 
 class DashboardController extends Controller
 {
@@ -39,14 +41,14 @@ class DashboardController extends Controller
      *
      * @return void
      */
-    public function dashboard()
-    {
-        $totalOrder = Order::count();
-        $totalCollection = Collection::count();
-        $totalCategory = Category::count();
-        $totalProduct = Product::count();
+public function dashboard()
+{
+    $totalOrder = Order::count();
+    $totalCollection = Collection::count();
+    $totalCategory = Category::count();
+    $totalProduct = Product::count();
 
-            $ordersDay = Order::selectRaw('DATE(created_at) as day, COUNT(*) as total')
+    $ordersDay = Order::selectRaw('DATE(created_at) as day, COUNT(*) as total')
         ->groupBy('day')
         ->orderBy('day')
         ->pluck('total','day');
@@ -61,18 +63,29 @@ class DashboardController extends Controller
         ->orderBy('year')
         ->pluck('total','year');
 
- $topProducts = DB::table('order_items')
-    ->join('variations', 'order_items.variation_id', '=', 'variations.id')
-    ->join('products', 'variations.product_id', '=', 'products.id')
-    ->select('products.id','products.title', DB::raw('SUM(order_items.quantity) as total_sold'))
-    ->groupBy('products.id','products.title')   // 👈 title ko bhi groupBy me le aao
-    ->orderByDesc('total_sold')
-    ->limit(10)
-    ->get();
+    $topProducts = DB::table('order_items')
+        ->join('variations', 'order_items.variation_id', '=', 'variations.id')
+        ->join('products', 'variations.product_id', '=', 'products.id')
+        ->select('products.id','products.title', DB::raw('SUM(order_items.quantity) as total_sold'))
+        ->groupBy('products.id','products.title')
+        ->orderByDesc('total_sold')
+        ->limit(10)
+        ->get();
 
+$startOfMonth = Carbon::now()->startOfMonth();
+$endOfMonth = Carbon::now()->endOfMonth();
 
-        return view('admin.dashboard',compact('topProducts','totalOrder','totalCollection','totalCategory','totalProduct','ordersDay','ordersMonth','ordersYear'));
-    }
+$pageVisits = WebsiteActivity::whereBetween('visited_at', [$startOfMonth, $endOfMonth])
+    ->select('page_name', DB::raw('COUNT(*) as total'))
+    ->groupBy('page_name')
+    ->orderByDesc('total')
+    ->pluck('total', 'page_name');
+
+    return view('admin.dashboard', compact(
+        'topProducts','totalOrder','totalCollection','totalCategory','totalProduct',
+        'ordersDay','ordersMonth','ordersYear','pageVisits'
+    ));
+}
 
     /**
      * Create a new controller instance.

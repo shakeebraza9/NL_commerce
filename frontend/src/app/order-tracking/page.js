@@ -1,5 +1,6 @@
 "use client"
-
+import { useEffect, useRef } from "react";
+import { useTrackActivityMutation } from "@/features/trackActivityApi";
 import { useState } from "react"
 import { Search, Package, Truck, CheckCircle, Clock, MapPin } from "lucide-react"
 
@@ -82,7 +83,8 @@ export default function OrderTrackingPage() {
   const [searchedOrder, setSearchedOrder] = useState(null)
   const [isSearching, setIsSearching] = useState(false)
   const [error, setError] = useState("")
-
+  const [trackActivity] = useTrackActivityMutation();
+  const hasTracked = useRef(false); 
   const handleSearch = () => {
     if (!trackingNumber.trim()) {
       setError("Please enter a tracking number")
@@ -106,6 +108,29 @@ export default function OrderTrackingPage() {
   const handleKeyPress = (e) => {
     if (e.key === "Enter") handleSearch()
   }
+
+
+    useEffect(() => {
+    if (hasTracked.current) return; 
+    hasTracked.current = true;
+
+    async function logActivity() {
+      try {
+        const ip = await fetch("https://api.ipify.org?format=json")
+          .then((res) => res.json())
+          .then((data) => data.ip);
+
+        await trackActivity({
+          page_name: "Order-Tracking",
+          ip_address: ip,
+        });
+      } catch (error) {
+        console.error("Tracking failed", error);
+      }
+    }
+
+    logActivity();
+  }, [trackActivity]);
 
   return (
     <div className="min-h-screen bg-white">

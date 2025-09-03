@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Mail;
 use Symfony\Component\Mime\Part\HtmlPart;
 use Illuminate\Support\Facades\App;
 use App\Models\NotifyEmail;
+use App\Models\ProductReview;
+use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
@@ -150,12 +152,16 @@ public function popular()
         ]);
     }
 
-    public function productApi($id)
+   public function productApi($id)
 {
-    // Fetch product with variations
-    $product = Product::with(['variations.attributes.values', 'variations.attributes.attribute'])
-        ->where('slug', $id)
-        ->firstOrFail();
+    // Fetch product with variations + reviews
+    $product = Product::with([
+        'variations.attributes.values',
+        'variations.attributes.attribute',
+        'reviews' // 👈 add kiya
+    ])
+    ->where('slug', $id)
+    ->firstOrFail();
 
     // Get related products randomly
     $related_products = Product::orderByRaw('RAND()')->limit(4)->get();
@@ -222,6 +228,7 @@ public function popular()
                 'hover_image' => $product->hover_image,
                 'gallery' => $product->images,
             ],
+            'customerReviews' => $product->reviews, // 👈 yahan reviews bhej rahe hain
             'attributes'        => array_values($attributes),
             'values'            => array_values($values),
             'variations'        => $variations,
@@ -230,6 +237,7 @@ public function popular()
         ]
     ], 200);
 }
+
 public function checkStockInAva($productId, Request $request)
     {
 
@@ -338,4 +346,54 @@ public function storenotify(Request $request)
             'data'    => $notify
         ]);
     }
+
+public function homeReviews(): JsonResponse
+{
+    $reviews = ProductReview::where('is_home', 1)
+        ->orderBy('id', 'DESC')
+        ->get();
+
+    return response()->json([
+        'status' => true,
+        'data'   => $reviews
+    ]);
+}
+
+
+public function store(Request $request)
+{
+    $request->validate([
+        'product_id' => 'required|integer|exists:products,id',
+        'name'       => 'required|string|max:255',
+        'review'     => 'required|string',
+        'star'       => 'required|integer|min:1|max:5',
+    ]);
+
+    $existingReview = ProductReview::where('product_id', $request->product_id)
+        ->where('name', $request->name)
+        ->first();
+
+    if ($existingReview) {
+        return response()->json([
+            'status'  => false,
+            'message' => 'You have already submitted a review for this product.'
+        ], 409);
+    }
+
+    $review = ProductReview::create([
+        'product_id' => $request->product_id,
+        'name'       => $request->name,
+        'review'     => $request->review,
+        'star'       => $request->star,
+        'status'     => 1,
+        'is_home'    => 0,
+    ]);
+
+    return response()->json([
+        'status'  => true,
+        'message' => 'Review submitted successfully. Waiting for approval.',
+        'data'    => $review
+    ], 201);
+}
+
 }

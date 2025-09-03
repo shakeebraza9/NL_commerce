@@ -7,7 +7,21 @@ export default function CategoryCards() {
 const { data, isLoading, isError } = useGetCategoriesQuery();
 const categories = data?.data || [];
 const [hoveredIndex, setHoveredIndex] = useState(null);
-if (isLoading) return <p>Loading categories...</p>;
+ if (isLoading) {
+  return (
+    <div className="flex items-center justify-center py-20 bg-white">
+      <div className="flex flex-col items-center">
+        {/* Spinner */}
+        <div className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+        
+        {/* Text */}
+        <p className="mt-4 text-gray-700 font-medium animate-pulse">
+          Loading Categories...
+        </p>
+      </div>
+    </div>
+  )
+}
 if (isError) return <p>Failed to load categories</p>;
 
     return (

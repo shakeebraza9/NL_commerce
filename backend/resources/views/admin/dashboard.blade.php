@@ -208,57 +208,61 @@
     createLineChart('productChart', 'rgba(40,167,69,1)', {{ $totalProduct }});
 </script>
 <script>
-    const ctx = document.getElementById('activityChart').getContext('2d');
+const ctx = document.getElementById('activityChart').getContext('2d');
 
-    const data = {
-        labels: ['Home', 'Products', 'About', 'Contact', 'Blog', 'Support'], // Pages
-        datasets: [{
-            label: 'Page Visits',
-            data: [120, 90, 60, 30, 70, 50], // Static demo data
-            backgroundColor: [
-                'rgba(54, 162, 235, 0.6)',
-                'rgba(255, 99, 132, 0.6)',
-                'rgba(255, 206, 86, 0.6)',
-                'rgba(75, 192, 192, 0.6)',
-                'rgba(153, 102, 255, 0.6)',
-                'rgba(255, 159, 64, 0.6)'
-            ],
-            borderColor: [
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    };
+const colors = [
+    'rgba(54, 162, 235, 0.7)',
+    'rgba(255, 99, 132, 0.7)',
+    'rgba(255, 206, 86, 0.7)',
+    'rgba(75, 192, 192, 0.7)',
+    'rgba(153, 102, 255, 0.7)',
+    'rgba(255, 159, 64, 0.7)',
+    'rgba(100, 255, 218, 0.7)',
+    'rgba(255, 205, 86, 0.7)',
+    'rgba(201, 203, 207, 0.7)'
+];
 
-    const config = {
-        type: 'bar', // bar chart
-        data: data,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Website Page Visits'
-                }
+const borderColors = colors.map(c => c.replace('0.7', '1'));
+
+const data = {
+    labels: @json($pageVisits->keys()),      // Pages
+    datasets: [{
+        label: 'Page Visits - This Month',
+        data: @json($pageVisits->values()), // Count per page
+        backgroundColor: colors,
+        borderColor: borderColors,
+        borderWidth: 1,
+        borderRadius: 5,       // Rounded bars
+        barPercentage: 0.6,    // Thickness of bars
+        categoryPercentage: 0.8
+    }]
+};
+
+const config = {
+    type: 'bar',
+    data: data,
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false },   // Hide legend for simplicity
+            title: { display: true, text: 'Website Page Visits (This Month)', font: { size: 18 } },
+            tooltip: { enabled: true }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { stepSize: 1 }  // Step 1
             },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+            x: {
+                ticks: { font: { size: 14 } }
             }
         }
-    };
+    }
+};
 
-    const activityChart = new Chart(ctx, config);
+new Chart(ctx, config);
 </script>
+
 
 <script>
     let chart;

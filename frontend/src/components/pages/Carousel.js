@@ -30,7 +30,21 @@ export default function Carousel() {
     return () => clearInterval(interval);
   }, [isPlaying, nextSlide, sliders.length]);
 
-  if (isLoading) return <div>Loading sliders...</div>;
+  if (isLoading) {
+  return (
+    <div className="flex items-center justify-center py-20 bg-white">
+      <div className="flex flex-col items-center">
+        {/* Spinner */}
+        <div className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+        
+        {/* Text */}
+        <p className="mt-4 text-gray-700 font-medium animate-pulse">
+          Loading sliders...
+        </p>
+      </div>
+    </div>
+  )
+}
   if (error) return <div>Error loading sliders</div>;
 
   return (

@@ -10,7 +10,7 @@ use App\Http\Controllers\Api\sSettingSController;
 use App\Http\Controllers\Api\OrderApiContoller;
 use App\Http\Controllers\Api\SupportController;
 use App\Http\Controllers\Api\PageController;
-
+use App\Http\Controllers\Api\WebsiteActivityController;
 
 
 Route::prefix('v1')->group(function () {
@@ -30,4 +30,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/products/{productId}/stock', [ProductController::class, 'checkStockInAva']);
     Route::post('/check-stock', [ProductController::class, 'checkStock']);
     Route::post('/notify-email', [ProductController::class, 'storenotify']);
+    Route::get('/reviews/home', [ProductController::class, 'homeReviews']);
+    Route::post('/reviews', [ProductController::class, 'store']);
+        Route::post('/track-activity', [WebsiteActivityController::class, 'track']);
 });

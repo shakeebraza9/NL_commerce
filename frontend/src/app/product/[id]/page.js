@@ -1,34 +1,58 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useEffect, useState,useRef } from "react"
 import { useParams } from "next/navigation"
 import ProductImages from "@/components/product/ProductImages"
 import ProductInfo from "@/components/product/ProductInfo"
 import ProductTabs from "@/components/product/ProductTabs"
 import RelatedProducts from "@/components/product/RelatedProducts"
 import Loader from "@/components/Loader"; 
+import { useTrackActivityMutation } from "@/features/trackActivityApi";
 
 export default function ProductDetail() {
     const { id  } = useParams()   
     const [productData, setProductData] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [trackActivity] = useTrackActivityMutation();
+    const hasTracked = useRef(false); 
+useEffect(() => {
+    if (!id) return
 
-    useEffect(() => {
-        if (!id ) return
-        const fetchProduct = async () => {
-            try {
-                const res = await fetch(`http://127.0.0.1:8000/api/v1/product/${id}`)
-                const data = await res.json()
-                if (data.status) {
-                    setProductData(data.data)
-                }
-            } catch (error) {
-                console.error("Error fetching product:", error)
-            } finally {
-                setLoading(false)
+    const fetchProduct = async () => {
+        try {
+            const res = await fetch(`http://127.0.0.1:8000/api/v1/product/${id}`)
+            const data = await res.json()
+            if (data.status) {
+                setProductData(data.data)
             }
+        } catch (error) {
+            console.error("Error fetching product:", error)
+        } finally {
+            setLoading(false)
         }
-        fetchProduct()
-    }, [id])
+    }
+
+    const logActivity = async () => {
+        if (hasTracked.current) return; 
+        hasTracked.current = true
+
+        try {
+            const ip = await fetch("https://api.ipify.org?format=json")
+              .then((res) => res.json())
+              .then((data) => data.ip);
+
+            await trackActivity({
+              page_name: "Product-Detail",
+              ip_address: ip,
+            });
+        } catch (error) {
+            console.error("Tracking failed", error);
+        }
+    }
+
+    fetchProduct()
+    logActivity()
+}, [id])
+
 
     if (loading) {
         return  <Loader />
@@ -37,8 +61,9 @@ export default function ProductDetail() {
     if (!productData) {
         return <div className="text-center py-20 text-red-500">Product not found</div>
     }
+    
 
-   const { product, attributes, values, variations, related_products, discount_percent } = productData
+   const { product, attributes, values, customerReviews,variations, related_products, discount_percent } = productData
 
  
    let productImages = []
@@ -73,12 +98,12 @@ export default function ProductDetail() {
                     <ProductImages images={productImages} productName={product.title} />
 
                     {/* Product Info */}
-                    <ProductInfo product={product} variation={variations} />
+                    <ProductInfo product={product}  variation={variations} />
                 </div>
 
                 {/* Product Tabs */}
                 <div className="mt-16">
-                    <ProductTabs product={product} />
+                    <ProductTabs customerReviews={customerReviews} productId={product.id} variation={variations}/>
                 </div>
 
                 {/* Related Products */}
